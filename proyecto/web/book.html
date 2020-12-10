@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de libros | Libros</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ac46df2686.js" crossorigin="anonymous"></script>
+</head>
+
+<body ng-app="App" ng-controller="Ctrl" ng-init="ListBooks()">
+    <!-- Barra de navegacion-->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Menu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="authors.html"><i class="fa fa-file-word-o" aria-hidden="true"></i>
+                        Autores</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="book.html"><i class="fa fa-book" aria-hidden="true"></i> Libros</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="authorbook.html"><i class="fa fa-address-card" aria-hidden="true"></i>
+                        Autores de los libros</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="user.html"><i class="fa fa-user" aria-hidden="true"></i> Usuarios</a>
+                </li>
+            </ul>
+            <form class="form-inline">
+                <button class="btn btn-outline-danger my-2 my-sm-0" ng-click="Logout()"><i class="fa fa-sign-in"
+                        aria-hidden="true"></i> Cerrar sesion</button>
+            </form>
+        </div>
+    </nav>
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>Titulo del libro</th>
+            <th>Acciones</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="book in registros">
+                <td>{{book._id}}</td>
+                <td>{{book.title}}</td>
+                <td><button class="btn btn-danger" ng-click="modalBorrar(book)" data-toggle="modal"
+                        data-target="#DeleteBook"><i class="fas fa-trash-alt"></i></button></td>
+                <td><button class="btn btn-info" ng-click="modalUpdate(book)" data-toggle="modal"
+                        data-target="#UpdateBook"><i class="fas fa-edit"></i></button></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Modal -->
+    <div class="modal fade" id="NewBook" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Registrar un nuevo autor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nombre del libro</label>
+                            <input ng-model="book.title" type="text" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="SaveBook(book)">Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Editar Libro -->
+    <div class="modal fade" id="UpdateBook" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar un libro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Titulo del libro</label>
+                            <input ng-model="book.title" type="text" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="UpdateBook(book)">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal boton de borrar-->
+    <div class="modal" tabindex="-1" id="DeleteBook">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Deceas eliminar este libro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Esta accion no se puede deshacer, Desea eliminarlo?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" ng-click="BorrarBook()">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery-3.5.1.slim.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.js"></script>
+    <script src="./js/angular.min.js"></script>
+    <script src='./js/book.js'></script>
+    <script type="text/javascript">
+        const boton = document.createElement("button");
+        boton.innerHTML = "<i class='fa fa-plus fa-2x'></i>";
+        boton.setAttribute("data-toggle", "modal");
+        boton.setAttribute("data-target", "#NewBook");
+        boton.className = "btn btn-info"
+        boton.style = "bottom:50px;right:50px;position:fixed;z-index:9999;"
+        document.body.appendChild(boton);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de libros | Usuarios</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/ac46df2686.js" crossorigin="anonymous"></script>
+</head>
+
+<body ng-app="App" ng-controller="Ctrl">
+    <!-- Barra de navegacion-->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Menu</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="authors.html"><i class="fa fa-file-word-o" aria-hidden="true"></i>
+                        Autores</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="book.html"><i class="fa fa-book" aria-hidden="true"></i> Libros</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="authorbook.html"><i class="fa fa-address-card" aria-hidden="true"></i>
+                        Autores de los libros</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="user.html"><i class="fa fa-user" aria-hidden="true"></i> Usuarios</a>
+                </li>
+            </ul>
+            <form class="form-inline">
+                <button class="btn btn-outline-danger my-2 my-sm-0" ng-click="Logout()"><i class="fa fa-sign-in"
+                        aria-hidden="true"></i> Cerrar sesion</button>
+            </form>
+        </div>
+    </nav>
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>Nombre de usuario</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Imagen</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in registros">
+                <td>{{user._id}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.role}}</td>
+                <td>{{user.image}}</td>
+                <td><button class="btn btn-danger" ng-click="modalBorrar(book)" data-toggle="modal"
+                        data-target="#DeleteBook"><i class="fas fa-trash-alt"></i></button></td>
+                <td><button class="btn btn-info" ng-click="modalUpdate(book)" data-toggle="modal"
+                        data-target="#UpdateBook"><i class="fas fa-edit"></i></button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="./js/jquery-3.5.1.slim.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <script src="./js/bootstrap.js"></script>
+    <script src="./js/angular.min.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('App', []);
+        app.controller('Ctrl', function ($scope, $http) {
+            $http({
+                method: 'GET',
+                url: 'http://localhost:8000/api/users'
+            }).then(function succes(respuesta) {
+                console.log(respuesta.data);
+                $scope.registros = respuesta.data.data;
+            }, function error(respuesta) {
+                console.log(respuesta.data);
+            });
+        });
+
+    </script>
+</body>
+
+</html>
